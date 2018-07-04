@@ -23,6 +23,7 @@
     "react-collapsible": "^2.2.0",
     "react-dom": "^16.4.0",
     "react-dropzone": "^3.0.0",
+    "react-file-reader": "^1.1.4",
     "react-flip-move": "^3.0.1",
     "react-modal": "^3.3.2",
     "react-responsive-accordion": "^1.0.0",
