@@ -2,8 +2,6 @@ import React from 'react';
 import {Bar, Line, Radar, Polar, Doughnut, Bubble, Scatter} from 'react-chartjs-2';
 import { createContainer } from 'meteor/react-meteor-data';
 import ReactFileReader from 'react-file-reader';
-// import readXlsxFile from 'read-excel-file';
-import XLSX from 'xlsx';
 
 export  class BarChart extends React.Component {
 
@@ -12,114 +10,100 @@ export  class BarChart extends React.Component {
           this.state={
             entireFile:"",
             xAxisLabels:'',
-            data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+            firstColumnOfData:'',
+            chartType:'line'
 
-
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255,99,132,1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }],
-            options: {
-          // This chart will not respond to mousemove, etc
-              events: ['click']
-              }
-              },
-              chartType:'line'
-              }
+          }
     }
 
+    //we want to return an object that we can pass to the data prop on each chart
+    //and where we can set the state of the labels and data itself
+    returnDataSet =() =>{
+      console.log("LABELS STATE", this.state.xAxisLabels);
+      var dataObject ={
+                             labels: this.state.xAxisLabels,
+                             datasets: [{
+                                 label: '# of Votes',
+                                 data: this.state.firstColumnOfData
+                             }]
+                     }
 
+      console.log("DATAOBJECT", dataObject);
+       return dataObject;
+
+    }
+
+    //radio buttons switch between chart types
     renderChartType(){
-      if(this.state.chartType == "line"){
-        return(
-          <Line
-              data={this.state.data}
+              if(this.state.chartType == "line"){
+                return(
+                  <Line
+                      data={this.returnDataSet()}
 
-             />
-        );
-      }
-      else if(this.state.chartType == "bar"){
-        return(
-          <Bar
-              data={this.state.data}
+                     />
+                );
+              }
+              else if(this.state.chartType == "bar"){
+                return(
+                  <Bar
+                      data={this.returnDataSet()}
 
-             />
-        );
-      }
-      else if(this.state.chartType == "polar"){
-        return(
-          <Polar
-              data={this.state.data}
+                     />
+                );
+              }
+              else if(this.state.chartType == "polar"){
+                return(
+                  <Polar
+                    data={this.returnDataSet()}
 
-             />
-        );
-      }
-      else if(this.state.chartType == "radar"){
-        return(
-          <Radar
-              data={this.state.data}
+                     />
+                );
+              }
+              else if(this.state.chartType == "radar"){
+                return(
+                  <Radar
+                      data={this.returnDataSet()}
 
-             />
-        );
-      }
-      else if(this.state.chartType == "doughnut"){
-        return(
-          <Doughnut
-              data={this.state.data}
+                     />
+                );
+              }
+              else if(this.state.chartType == "doughnut"){
+                return(
+                  <Doughnut
+                      data={this.returnDataSet()}
 
-             />
-        );
-      }
-
-
+                     />
+                );
+              }
     }
 
-    //read in the csv file
+
+    //read in the csv file and process it in order to get the x axis labels and the dataset
+    //the dataset will contain the first column with data, not multiple columns
     handleFiles = files => {
             var reader = new FileReader();
             //filereader takes a callback function, must use arrow to preserver stateless
             //when data is done reading then function fires and state is set
             reader.onload = (e) => {
-                  console.log("File Results done should not be null", reader.result);
+
+                  //we need to split the entire file by newline chars to get the labels and the first column of data
                   this.setState({entireFile: reader.result});
                   var arrayOfStrings = this.state.entireFile.split("\n");
-                  this.setState({xAxisLabels: arrayOfStrings[0].split(",")});
-                  console.log("LABELS:", this.state.xAxisLabels);
+                  //set the labels and the data
+                  this.setState({
+                    xAxisLabels: arrayOfStrings[0].split(","),
+                    firstColumnOfData:arrayOfStrings[1].split(",")
+                  });
+
             }
           //contents of file will be converted to a string
           var entireFile = reader.readAsText(files[0]);
     }
 
 
-    processFileContent(){
-
-    }
-
-
-
     render() {
-
               return (
                   <div className="container">
-                      {this.processFileContent()}
                             <div className="row justify-content-center selectCharts">
 
                                         <label className="radioButtons">
@@ -171,6 +155,8 @@ export  class BarChart extends React.Component {
     }
 
 }
+
+
 
 export default createContainer(() => {
   return {
