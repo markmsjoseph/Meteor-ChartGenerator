@@ -2,6 +2,7 @@ import React from 'react';
 import {Bar, Line, Radar, Polar, Doughnut, Bubble, Scatter} from 'react-chartjs-2';
 import ReactFileReader from 'react-file-reader';
 // import readXlsxFile from 'read-excel-file';
+import XLSX from 'xlsx';
 
 export default class BarChart extends React.Component {
 
@@ -89,15 +90,17 @@ export default class BarChart extends React.Component {
     }
 
 
-    handleFiles = (files) => {
-   //    var reader = new FileReader();
-   //   reader.onload = function(e) {
-   //   // Use reader.result
-   //   alert(reader.result)
-   //   }
-   //   console.log(files[0]);
-   // reader.readAsText(files[0]);
+    handleFiles = files => {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+            // Use reader.result
+            alert(reader.result);
+            console.log(reader.result);
+            }
+          reader.readAsText(files[0]);
     }
+
+
 
     render() {
 
@@ -140,8 +143,8 @@ export default class BarChart extends React.Component {
                                                 <span className="checkmark"></span>
                                         </label>
                                         <br/>
-                                        <ReactFileReader handleFiles={this.handleFiles}>
-                                          <button className='btn'>Upload</button>
+                                        <ReactFileReader handleFiles={this.handleFiles} fileTypes={'.csv'}>
+                                            <button className='btn'>Upload</button>
                                         </ReactFileReader>
 
                                           {this.renderChartType()}
