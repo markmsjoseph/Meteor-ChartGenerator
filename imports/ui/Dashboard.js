@@ -28,12 +28,12 @@ export default class Dashboard extends React.Component {
                   <div>
                         <div className="header">
                                   <div className="header__content">
-                                        <PrivateHeader  title="Poetry App"  />
-                                          <h3 className = "header__linksAllPoems"> <Link to ="/allnotes">Accounting Software</Link> </h3>
+                                        <PrivateHeader  title="Data Charts"  />
+                                          <h3 className = "header__linksAllPoems"> <Link to ="/allnotes">Link to not yet built component</Link> </h3>
                                   </div>
+                                                    <p className=" row justify-content-center">  Save your excel document as a csv file with the first row being the titles of the data and the second row being the data values and click upload </p>
                         </div>
-                        Select Chart Type
-                        Import Excel Document
+
                       <Chart />
                   </div>
               );

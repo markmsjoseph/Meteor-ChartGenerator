@@ -23,8 +23,25 @@ export  class BarChart extends React.Component {
       var dataObject ={
                              labels: this.state.xAxisLabels,
                              datasets: [{
-                                 label: '# of Votes',
-                                 data: this.state.firstColumnOfData
+                                           label: '# of Votes',
+                                           data: this.state.firstColumnOfData,
+                                           backgroundColor: [
+                                              'rgba(255, 99, 132, 0.2)',
+                                              'rgba(54, 162, 235, 0.2)',
+                                              'rgba(255, 206, 86, 0.2)',
+                                              'rgba(75, 192, 192, 0.2)',
+                                              'rgba(153, 102, 255, 0.2)',
+                                              'rgba(255, 159, 64, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgba(255,99,132,1)',
+                                                'rgba(54, 162, 235, 1)',
+                                                'rgba(255, 206, 86, 1)',
+                                                'rgba(75, 192, 192, 1)',
+                                                'rgba(153, 102, 255, 1)',
+                                                'rgba(255, 159, 64, 1)'
+                                            ],
+                                            borderWidth: 1
                              }]
                      }
 
@@ -101,6 +118,21 @@ export  class BarChart extends React.Component {
     }
 
 
+        onSubmitHandler(e){
+            e.preventDefault();
+            //all refs are stored on the this.refs object, trim is to take off all leading and after spaces
+            let dataValue = this.refs.dataValue.value.trim();
+            let label = this.refs.label.value.trim();
+
+            this.setState((prevState) => ({
+              xAxisLabels: [...prevState.xAxisLabels, label],
+              firstColumnOfData: [...prevState.firstColumnOfData, dataValue]
+            }));
+
+
+        }
+
+
     render() {
               return (
                   <div className="container">
@@ -143,6 +175,12 @@ export  class BarChart extends React.Component {
                                         <ReactFileReader handleFiles={this.handleFiles} fileTypes={'.csv'}>
                                             <button className='btn'>Upload</button>
                                         </ReactFileReader>
+
+                                        <form onSubmit={this.onSubmitHandler.bind(this)} >
+                                              <input  className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "dataValue" placeholder= "Value of new datapoint"/>
+                                              <input className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "label" placeholder= "X-axis label"/>
+                                               <button className=' button-login'> Add Data Point and label</button>
+                                        </form>
 
                                           {this.renderChartType()}
 
