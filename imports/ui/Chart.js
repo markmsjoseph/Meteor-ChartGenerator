@@ -1,14 +1,17 @@
 import React from 'react';
 import {Bar, Line, Radar, Polar, Doughnut, Bubble, Scatter} from 'react-chartjs-2';
+import { createContainer } from 'meteor/react-meteor-data';
 import ReactFileReader from 'react-file-reader';
 // import readXlsxFile from 'read-excel-file';
 import XLSX from 'xlsx';
 
-export default class BarChart extends React.Component {
+export  class BarChart extends React.Component {
 
     constructor(props) {
          super(props);
           this.state={
+            entireFile:"",
+            xAxisLabels:'',
             data: {
             labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
             datasets: [{
@@ -89,15 +92,25 @@ export default class BarChart extends React.Component {
 
     }
 
-
+    //read in the csv file
     handleFiles = files => {
             var reader = new FileReader();
-            reader.onload = function(e) {
-            // Use reader.result
-            alert(reader.result);
-            console.log(reader.result);
+            //filereader takes a callback function, must use arrow to preserver stateless
+            //when data is done reading then function fires and state is set
+            reader.onload = (e) => {
+                  console.log("File Results done should not be null", reader.result);
+                  this.setState({entireFile: reader.result});
+                  var arrayOfStrings = this.state.entireFile.split("\n");
+                  this.setState({xAxisLabels: arrayOfStrings[0].split(",")});
+                  console.log("LABELS:", this.state.xAxisLabels);
             }
-          reader.readAsText(files[0]);
+          //contents of file will be converted to a string
+          var entireFile = reader.readAsText(files[0]);
+    }
+
+
+    processFileContent(){
+
     }
 
 
@@ -106,7 +119,7 @@ export default class BarChart extends React.Component {
 
               return (
                   <div className="container">
-
+                      {this.processFileContent()}
                             <div className="row justify-content-center selectCharts">
 
                                         <label className="radioButtons">
@@ -158,3 +171,9 @@ export default class BarChart extends React.Component {
     }
 
 }
+
+export default createContainer(() => {
+  return {
+
+  };
+}, BarChart);
