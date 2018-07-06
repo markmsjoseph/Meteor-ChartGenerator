@@ -11,6 +11,8 @@ export  class BarChart extends React.Component {
             entireFile:"",
             xAxisLabels:'',
             firstColumnOfData:'',
+            secondCOlumnOfData:'',
+            twoPointPlot:'false',
             chartType:'line'
 
           }
@@ -118,7 +120,8 @@ export  class BarChart extends React.Component {
     }
 
 
-        onSubmitHandler(e){
+        //adds new label and data to the graphs
+        addNewDataPointAndLabel(e){
             e.preventDefault();
             //all refs are stored on the this.refs object, trim is to take off all leading and after spaces
             let dataValue = this.refs.dataValue.value.trim();
@@ -133,7 +136,43 @@ export  class BarChart extends React.Component {
         }
 
 
+        //create array of x and y point objects
+        generateXandYdataPoints(xarray, yarray){
+
+            let xyArrayPoints = [];//data array which will hold objects of x and y values
+
+            //excel rows were not of x and y coordinate types
+            if(xarray.length != yarray.length){
+              console.log("Bad data input");
+            }
+            else{
+              for(var i=0; i<xarray.length; i++){
+                //create object of form {x:12,y:20}
+                  const coordinatesObject = {x:xarray[i], y:yarray[i]}
+                  console.log(coordinatesObject);
+                  xyArrayPoints.push(coordinatesObject);
+              }
+              console.log(xyArrayPoints);
+            }
+
+        }
+
+        // removeDataPoint(){
+        //       var array = this.state.people.filter(function(item) {
+        //         return item !== e.target.value
+        //       });
+        //
+        //
+        //
+        //       this.setState({
+        //         people: array
+        //       })
+        //
+        // }
+
+
     render() {
+      this.generateXandYdataPoints([1,2,3,4,5], [6,7,8,9,10])
               return (
                   <div className="container">
                             <div className="row justify-content-center selectCharts">
@@ -176,11 +215,13 @@ export  class BarChart extends React.Component {
                                             <button className='btn'>Upload</button>
                                         </ReactFileReader>
 
-                                        <form onSubmit={this.onSubmitHandler.bind(this)} >
+                                        <form onSubmit={this.addNewDataPointAndLabel.bind(this)} >
                                               <input  className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "dataValue" placeholder= "Value of new datapoint"/>
                                               <input className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "label" placeholder= "X-axis label"/>
                                                <button className=' button-login'> Add Data Point and label</button>
                                         </form>
+
+
 
                                           {this.renderChartType()}
 
