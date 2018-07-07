@@ -57,50 +57,6 @@ export  class BarChart extends React.Component {
     }
 
 
-
-    //create array of x and y point objects
-    //called in render2PlainCharts
-    //returns an array with objects
-    generateXandYdataPoints(xarray, yarray){
-        console.log("BP3");
-        let xyArrayPoints = [];//data array which will hold objects of x and y values
-
-        //excel rows were not of x and y coordinate types
-        if(xarray.length != yarray.length){
-          console.log("Bad data input");
-        }
-        else{
-          for(var i=0; i<xarray.length; i++){
-            //create object of form {x:12,y:20}
-              const coordinatesObject = {x:parseFloat(xarray[i]), y:parseFloat(yarray[i])}
-              console.log(coordinatesObject);
-              xyArrayPoints.push(coordinatesObject);
-          }
-          // console.log("Array of objects: ", xyArrayPoints);
-        }
-          console.log("BP4");
-        return xyArrayPoints;
-
-    }
-
-
-
-
-
-    //sets state of xyDataArray to be an array of 2 poin objects
-    //returns nothing, only responsible for setting state
-    render2PlainCharts(){
-        console.log("BP2");
-      let twoAxisData = this.generateXandYdataPoints(this.state.singleDataSet, this.state.twoPointDataSet);
-      console.log("Array of objects: ", twoAxisData);
-      this.setState({xyDataArray: twoAxisData });
-        console.log("BP5");
-
-    }
-
-
-
-
     //read in the csv file and process it in order to get the x axis labels and the dataset
     //the dataset will contain the first column with data, not multiple columns
     handleFiles = (files) => {
@@ -126,7 +82,7 @@ export  class BarChart extends React.Component {
                 else{
                   for(var i=0; i<xarray.length; i++){
                     //create object of form {x:12,y:20}
-                      const coordinatesObject = {x:parseFloat(xarray[i]), y:parseFloat(yarray[i])}
+                      const coordinatesObject = {x:parseFloat(xarray[i]), y:parseFloat(yarray[i]), r:15}
                       console.log(coordinatesObject);
                       xyArrayPoints.push(coordinatesObject);
                   }
@@ -150,7 +106,6 @@ export  class BarChart extends React.Component {
 
 
 
-
     //adds new label and data to the graphs with 1 axis
     addNewDataPointAndLabel(e){
         e.preventDefault();
@@ -170,21 +125,18 @@ export  class BarChart extends React.Component {
 
     //adds new x y coordinate and label
     addNewXYDataPointAndLabel(e){
-      // e.preventDefault();
-      // //all refs are stored on the this.refs object, trim is to take off all leading and after spaces
-      // let xAxis = this.refs.xAxis.value.trim();
-      // let xAxis = this.refs.yAxis.value.trim();
-      // let label = this.refs.label.value.trim();
-      //
-      // const xyObject = {x:xAxis, y:yAxis}
-      // //update xy array of data containing xy points
-      // this.setState((prevState) => ({
-      //   xyDataArray: [...prevState.xyDataArray, xyObject],
-      //   xAxisLabels: [...prevState.xAxisLabels, label]
-      // }));
+      e.preventDefault();
+      //all refs are stored on the this.refs object, trim is to take off all leading and after spaces
+      let xAxis = this.refs.xAxis.value.trim();
+      let yAxis = this.refs.yAxis.value.trim();
 
+
+      const xyObject = {x:parseFloat(xAxis), y:parseFloat(yAxis), r:15}
+      //update xy array of data containing xy points
+      this.setState((prevState) => ({
+        xyDataArray: [...prevState.xyDataArray, xyObject]
+      }));
     }
-
 
 
     //displays radio button for 1 axis
@@ -328,9 +280,6 @@ export  class BarChart extends React.Component {
                   <div className="container">
                             <div className="row justify-content-center selectCharts">
 
-
-                              <br/>
-
                               <ReactFileReader handleFiles={this.handleFiles} fileTypes={'.csv'}>
                                   <button className='btn'>Upload</button>
                               </ReactFileReader>
@@ -338,52 +287,38 @@ export  class BarChart extends React.Component {
                              <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
                                              <TabList className="tabtop">
                                                <h1 className = "chatAppHeader"> Select Axis </h1>
-
-                                                               <Tab>Upload CSV</Tab>
-                                                               <Tab>Build Single X-Axis Chart</Tab>
-                                                              <Tab>Build X-Y-Axis Chart</Tab>
-
+                                                               <Tab>X Axis Charts</Tab>
+                                                               <Tab>X, Y Axis Chart</Tab>
                                              </TabList>
 
-                                             <TabPanel>
-                                               <form onSubmit={this.addNewDataPointAndLabel.bind(this)} >
-                                                     <input  className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "dataValue" placeholder= "Value of new datapoint"/>
-                                                     <input className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "label" placeholder= "X-axis label"/>
-                                                      <button className=' button-login'> Add Data Point on X-Axis and Label</button>
-                                               </form>
 
-                                                {this.displayChartOptions()}
+                                             <TabPanel>
+                                                 {this.displayChartOptions()}
+                                                 <form onSubmit={this.addNewDataPointAndLabel.bind(this)} >
+                                                       <input  className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "dataValue" placeholder= "Value of new datapoint"/>
+                                                       <input className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "label" placeholder= "X-axis label"/>
+                                                        <button className=' button-login'> Add Data Point on X-Axis and Label</button>
+                                                 </form>
                                              </TabPanel>
 
                                              <TabPanel>
-                                               <form onSubmit={this.addNewDataPointAndLabel.bind(this)} >
-                                                     <input  className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "xAxis" placeholder= "X-axis label"/>
-                                                     <input className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "yAxis" placeholder= "Y-axis label"/>
-                                                     <input className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "label" placeholder= "Label"/>
-                                                      <button className=' button-login'> Add X,Y Point</button>
-                                               </form>
-
-                                               {this.displayChartOptions2d() }
+                                                  {this.displayChartOptions2d() }
+                                                   <form onSubmit={this.addNewXYDataPointAndLabel.bind(this)} >
+                                                         <input  className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "xAxis" placeholder= "X-axis label"/>
+                                                         <input className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "yAxis" placeholder= "Y-axis label"/>
+                                                          <button className=' button-login'> Add X,Y Point</button>
+                                                   </form>
                                             </TabPanel>
-                                            <TabPanel>
-                                              <form onSubmit={this.addNewDataPointAndLabel.bind(this)} >
-                                                    <input  className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "xAxis" placeholder= "X-axis label"/>
-                                                    <input className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "yAxis" placeholder= "Y-axis label"/>
-                                                    <input className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "label" placeholder= "Label"/>
-                                                     <button className=' button-login'> Add X,Y Point</button>
-                                              </form>
-                                           </TabPanel>
                               </Tabs>
-                                          { this.state.tabIndex== 0 ?  this.renderChartType(this.returnDataSet(this.state.singleDataSet)) : this.renderChartType(this.returnDataSet(this.state.xyDataArray)) }
+                                          { this.state.tabIndex== 0 ?  this.renderChartType(this.returnDataSet(this.state.singleDataSet)) : console.log("") }
+                                          { this.state.tabIndex== 1 ? this.renderChartType(this.returnDataSet(this.state.xyDataArray)) : console.log("") }
 
                                 </div>
                   </div>
               );
-    }
+    }//end render
 
-
-
-}
+}//end class
 
 
 
@@ -392,305 +327,3 @@ export default createContainer(() => {
 
   };
 }, BarChart);
-
-
-
-
-
-
-
-
-//
-//
-//
-//
-//
-//
-// import React from 'react';
-// import {Bar, Line, Radar, Polar, Doughnut, Bubble, Scatter} from 'react-chartjs-2';
-// import { createContainer } from 'meteor/react-meteor-data';
-// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-// import ReactFileReader from 'react-file-reader';
-// import { CSSTransitionGroup } from 'react-transition-group';
-//
-// export  class BarChart extends React.Component {
-//
-//     constructor(props) {
-//          super(props);
-//           this.state={
-//             entireFile:"",//used to load entire file and manipulate it
-//             xAxisLabels:'',
-//             singleDataSet:'',
-//             twoPointDataSet:'',
-//             chartType:'line',
-//             tabIndex:0,
-//             newArr:'',
-//             xyDataArray:[
-//                       {
-//                          x: .11,
-//                          y: .45,
-//                          r: 15
-//                        }
-//                        ,
-//                        {
-//                          x: .511,
-//                          y: .45,
-//                          r: 15
-//                        }
-//              ]
-//
-//           }
-//     }
-//
-//     //we want to return an object that we can pass to the data prop on each chart
-//     //and where we can set the state of the labels and data itself
-//     //called in render method and passed as arg to renderChartType
-//     returnDataSet =(data) =>{
-//
-//       var dataObject ={
-//                              labels: this.state.xAxisLabels,
-//                              datasets: [{
-//                                            label: '# of Votes',
-//                                            data:  [{
-//             x: .11,
-//             y: .45,
-//             r: 15
-//           },{
-// x: .511,
-// y: .45,
-// r: 15
-// }],
-//                                            backgroundColor: [
-//                                               'rgba(255, 99, 132, 0.2)',
-//                                               'rgba(54, 162, 235, 0.2)',
-//                                               'rgba(255, 206, 86, 0.2)',
-//                                               'rgba(75, 192, 192, 0.2)',
-//                                               'rgba(153, 102, 255, 0.2)',
-//                                               'rgba(255, 159, 64, 0.2)'
-//                                             ],
-//                                             borderColor: [
-//                                                 'rgba(255,99,132,1)',
-//                                                 'rgba(54, 162, 235, 1)',
-//                                                 'rgba(255, 206, 86, 1)',
-//                                                 'rgba(75, 192, 192, 1)',
-//                                                 'rgba(153, 102, 255, 1)',
-//                                                 'rgba(255, 159, 64, 1)'
-//                                             ],
-//                                             borderWidth: 1
-//                              }]
-//                      }
-//
-//
-//        return dataObject;
-//
-//     }
-//
-//
-//
-//
-//
-//     //read in the csv file and process it in order to get the x axis labels and the dataset
-//     //the dataset will contain the first column with data, not multiple columns
-//     handleFiles = (files) => {
-//         //console.log("BP0");
-//             var reader = new FileReader();
-//             //filereader takes a callback function, must use arrow to preserver stateless
-//             //when data is done reading then function fires and state is set
-//             reader.onload = (e) => {
-//
-//                   //we need to split the entire file by newline chars to get the labels and the first column of data
-//                   this.setState({entireFile: reader.result});
-//                     //console.log("BP0.5");
-//
-//                   var arrayOfStrings = this.state.entireFile.split("\n");
-//                   console.log("BP0.75", arrayOfStrings);
-//                   //set the labels and the data
-//                   this.setState({
-//                     xAxisLabels: arrayOfStrings[0].split(","),
-//                     singleDataSet:arrayOfStrings[1].split(","),
-//                     twoPointDataSet:arrayOfStrings[2].split(",")
-//                   });
-//                   //console.log("BP1");
-//
-//
-//
-//                   let xyArrayPoints = [];//data array which will hold objects of x and y values
-//
-//                   // //excel rows were not of x and y coordinate types
-//                   // if(this.state.xAxisLabels.length != yarray.length){
-//                   //   console.log("Bad data input");
-//                   // }
-//                   // else{
-//                     for(var i=0; i<this.state.singleDataSet.length; i++){
-//                       //create object of form {x:12,y:20}
-//                         const coordinatesObject = {x:parseFloat(this.state.singleDataSet[i]), y:parseFloat(this.state.twoPointDataSet[i]), r:15}
-//                         //console.log("2D object", coordinatesObject);
-//                         xyArrayPoints.push(coordinatesObject);
-//                     }
-//                     // console.log("Array of objects: ", xyArrayPoints);
-//
-//
-//                   console.log("bp0");
-//                   this.setState({newArr: xyArrayPoints });
-//                   console.log("STATE xyArrayPoints",this.state.xyDataArray);
-//                     console.log("STATE newArr",this.state.newArr);
-//             }
-//           //contents of file will be converted to a string
-//           var entireFile = reader.readAsText(files[0]);
-//     }
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//     displayChartOptions2d(){
-//       return(
-//         <div>
-//
-//                   <label className="radioButtons">
-//                         <input type="radio" name="button" value="scatter" onChange={(e)=>{
-//                           this.setState({chartType: e.target.value});
-//                         }}/> Scatter
-//                           <span className="checkmark"></span>
-//                   </label>
-//                   <label className="radioButtons">
-//                         <input type="radio" name="button" value="bubble" onChange={(e)=>{
-//                           this.setState({chartType: e.target.value});
-//                         }}/> Bubble
-//                           <span className="checkmark"></span>
-//                   </label>
-//       </div>
-//       );
-//     }
-//
-//
-//     //displays the 1 axis chart
-//     //takes a dataset as argument
-//     renderChartType(){
-//
-//               if(this.state.chartType == "line"){
-//                 return(
-//                   <Line
-//                       data={dataset}
-//
-//                      />
-//                 );
-//               }
-//               else if(this.state.chartType == "bar"){
-//                 return(
-//                   <Bar
-//                       data={dataset}
-//
-//                      />
-//                 );
-//               }
-//               else if(this.state.chartType == "polar"){
-//                 return(
-//                   <Polar
-//                     data={dataset}
-//
-//                      />
-//                 );
-//               }
-//               else if(this.state.chartType == "radar"){
-//                 return(
-//                   <Radar
-//                       data={dataset}
-//
-//                      />
-//                 );
-//               }
-//               else if(this.state.chartType == "doughnut"){
-//                 return(
-//                   <Doughnut
-//                       data={dataset}
-//
-//                      />
-//                 );
-//               }
-//               else if(this.state.chartType == "scatter"){
-//                 return(
-//                   <Scatter
-//                       data={dataset}
-//
-//                      />
-//                 );
-//               }
-//               else if(this.state.chartType == "bubble"){
-//                 return(
-//                   <Bubble
-//                       data={dataset}
-//
-//                      />
-//                 );
-//               }
-//     }
-//
-//
-//     render() {
-//
-//               return (
-//                   <div className="container">
-//                             <div className="row justify-content-center selectCharts">
-//
-//
-//                               <br/>
-//
-//
-//
-//
-//                               <ReactFileReader handleFiles={this.handleFiles} fileTypes={'.csv'}>
-//                                   <button className='btn'>Upload</button>
-//                               </ReactFileReader>
-//                                                <Bubble
-//                                                    data={{
-//
-//                                                      labels: this.state.xAxisLabels,
-//                                                      datasets: [{
-//                                                                    label: '# of Votes',
-//                                                                    data: this.state.xyDataArray ,
-//                                                                        backgroundColor: [
-//                                                                       'rgba(255, 99, 132, 0.2)',
-//                                                                       'rgba(54, 162, 235, 0.2)',
-//                                                                       'rgba(255, 206, 86, 0.2)',
-//                                                                       'rgba(75, 192, 192, 0.2)',
-//                                                                       'rgba(153, 102, 255, 0.2)',
-//                                                                       'rgba(255, 159, 64, 0.2)'
-//                                                                     ],
-//                                                                     borderColor: [
-//                                                                         'rgba(255,99,132,1)',
-//                                                                         'rgba(54, 162, 235, 1)',
-//                                                                         'rgba(255, 206, 86, 1)',
-//                                                                         'rgba(75, 192, 192, 1)',
-//                                                                         'rgba(153, 102, 255, 1)',
-//                                                                         'rgba(255, 159, 64, 1)'
-//                                                                     ],
-//                                                                     borderWidth: 1
-//                                                      }]
-//                                                                                   }}
-//
-//                                                   />
-//
-//
-//                                 </div>
-//                   </div>
-//               );
-//     }
-//
-// }
-//
-//
-//
-// export default createContainer(() => {
-//   return {
-//
-//   };
-// }, BarChart);
