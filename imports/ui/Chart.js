@@ -1,5 +1,5 @@
 import React from 'react';
-import {Bar, Line, Radar, Polar, Doughnut, Bubble, Scatter} from 'react-chartjs-2';
+import {Bar, Pie, Line, Radar, Polar, Doughnut, Bubble, Scatter} from 'react-chartjs-2';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import ReactFileReader from 'react-file-reader';
@@ -143,12 +143,7 @@ export  class BarChart extends React.Component {
     displayChartOptions(){
       return(
         <div>
-                  <label className="radioButtons">
-                        <input type="radio" name="button" value="line"  onChange={(e)=>{
-                        this.setState({chartType: e.target.value});
-                      }}/> Line
-                          <span className="checkmark"></span>
-                  </label>
+
 
                   <label className="radioButtons">
                         <input type="radio" name="button" value="bar" onChange={(e)=>{
@@ -158,15 +153,16 @@ export  class BarChart extends React.Component {
                   </label>
 
                   <label className="radioButtons">
+                        <input type="radio" name="button" value="pie" onChange={(e)=>{
+                          this.setState({chartType: e.target.value});
+                        }}/> Pie
+                          <span className="checkmark"></span>
+                  </label>
+
+                  <label className="radioButtons">
                         <input type="radio" name="button" value="polar" onChange={(e)=>{
                           this.setState({chartType: e.target.value});
                         }}/> Polar
-                          <span className="checkmark"></span>
-                  </label>
-                  <label className="radioButtons">
-                        <input type="radio" name="button" value="radar" onChange={(e)=>{
-                          this.setState({chartType: e.target.value});
-                        }}/> Radar
                           <span className="checkmark"></span>
                   </label>
 
@@ -176,6 +172,27 @@ export  class BarChart extends React.Component {
                         }}/> Doughnut
                           <span className="checkmark"></span>
                   </label>
+
+
+
+
+                  <label className="radioButtons">
+                        <input type="radio" name="button" value="line"  onChange={(e)=>{
+                        this.setState({chartType: e.target.value});
+                      }}/> Line
+                          <span className="checkmark"></span>
+                  </label>
+
+                  <label className="radioButtons">
+                        <input type="radio" name="button" value="radar" onChange={(e)=>{
+                          this.setState({chartType: e.target.value});
+                        }}/> Radar
+                          <span className="checkmark"></span>
+                  </label>
+
+
+
+
 
 
         </div>
@@ -190,7 +207,7 @@ export  class BarChart extends React.Component {
         <div>
 
                   <label className="radioButtons">
-                        <input type="radio" name="button" value="scatter" onChange={(e)=>{
+                        <input type="radio"  name="button" value="scatter"   onChange={(e)=>{
                           this.setState({chartType: e.target.value});
                         }}/> Scatter
                           <span className="checkmark"></span>
@@ -214,9 +231,9 @@ export  class BarChart extends React.Component {
               if(this.state.chartType == "line"){
                 return(
                   <Line
-                      data={dataset}
+                        data={dataset}
 
-                     />
+                       />
                 );
               }
               else if(this.state.chartType == "bar"){
@@ -262,6 +279,14 @@ export  class BarChart extends React.Component {
               else if(this.state.chartType == "bubble"){
                 return(
                   <Bubble
+                      data={dataset}
+
+                     />
+                );
+              }
+              else if(this.state.chartType == "pie"){
+                return(
+                  <Pie
                       data={dataset}
 
                      />

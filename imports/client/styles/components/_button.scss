@@ -68,6 +68,12 @@ text-transform: uppercase;
   position: absolute;
       right: 2rem;
       top: 4rem;
+
+      @include smallestPhoneSizes{
+        right: 1rem;
+        top: 1rem;
+      }
+
 }
 .delete-button{
   width:50%;
