@@ -14,9 +14,10 @@ export  class BarChart extends React.Component {
             xAxisLabels:'',
             singleDataSet:'',
             twoPointDataSet:'',
-            chartType:'line',
+            chartType:'scatter',
             tabIndex:0,
-            xyDataArray:''
+            xyDataArray:'',
+            error:''
 
           }
     }
@@ -118,6 +119,8 @@ export  class BarChart extends React.Component {
           singleDataSet: [...prevState.singleDataSet, dataValue]
         }));
 
+        this.refs.dataValue.value = "";
+        this.refs.label.value="";
 
     }
 
@@ -126,6 +129,8 @@ export  class BarChart extends React.Component {
     //adds new x y coordinate and label
     addNewXYDataPointAndLabel(e){
       e.preventDefault();
+
+
       //all refs are stored on the this.refs object, trim is to take off all leading and after spaces
       let xAxis = this.refs.xAxis.value.trim();
       let yAxis = this.refs.yAxis.value.trim();
@@ -136,6 +141,11 @@ export  class BarChart extends React.Component {
       this.setState((prevState) => ({
         xyDataArray: [...prevState.xyDataArray, xyObject]
       }));
+
+      console.log("BEFORE ADD");
+      this.refs.xAxis.value = "";
+      this.refs.yAxis.value = "";
+      console.log("AFTER ADD");
     }
 
 
@@ -145,28 +155,28 @@ export  class BarChart extends React.Component {
         <div>
 
 
-                  <label className="radioButtons">
+                  <label className="radio-button">
                         <input type="radio" name="button" value="bar" onChange={(e)=>{
                           this.setState({chartType: e.target.value});
                         }}/> Bar
                           <span className="checkmark"></span>
                   </label>
 
-                  <label className="radioButtons">
+                  <label className="radio-button">
                         <input type="radio" name="button" value="pie" onChange={(e)=>{
                           this.setState({chartType: e.target.value});
                         }}/> Pie
                           <span className="checkmark"></span>
                   </label>
 
-                  <label className="radioButtons">
+                  <label className="radio-button">
                         <input type="radio" name="button" value="polar" onChange={(e)=>{
                           this.setState({chartType: e.target.value});
                         }}/> Polar
                           <span className="checkmark"></span>
                   </label>
 
-                  <label className="radioButtons">
+                  <label className="radio-button">
                         <input type="radio" name="button" value="doughnut" onChange={(e)=>{
                           this.setState({chartType: e.target.value});
                         }}/> Doughnut
@@ -176,14 +186,14 @@ export  class BarChart extends React.Component {
 
 
 
-                  <label className="radioButtons">
+                  <label className="radio-button">
                         <input type="radio" name="button" value="line"  onChange={(e)=>{
                         this.setState({chartType: e.target.value});
                       }}/> Line
                           <span className="checkmark"></span>
                   </label>
 
-                  <label className="radioButtons">
+                  <label className="radio-button">
                         <input type="radio" name="button" value="radar" onChange={(e)=>{
                           this.setState({chartType: e.target.value});
                         }}/> Radar
@@ -206,14 +216,16 @@ export  class BarChart extends React.Component {
       return(
         <div>
 
-                  <label className="radioButtons">
+                  <label className="radio-button">
                         <input type="radio"  name="button" value="scatter"   onChange={(e)=>{
+                          console.log("setting state scatter");
                           this.setState({chartType: e.target.value});
                         }}/> Scatter
                           <span className="checkmark"></span>
                   </label>
-                  <label className="radioButtons">
+                  <label className="radio-button">
                         <input type="radio" name="button" value="bubble" onChange={(e)=>{
+                          console.log("Setting state bubble");
                           this.setState({chartType: e.target.value});
                         }}/> Bubble
                           <span className="checkmark"></span>
@@ -305,13 +317,15 @@ export  class BarChart extends React.Component {
                   <div className="container">
                             <div className="row justify-content-center selectCharts">
 
+                              <div className = "fileREaderButton">
                               <ReactFileReader handleFiles={this.handleFiles} fileTypes={'.csv'}>
-                                  <button className='btn'>Upload</button>
+                                  <button className=''>Upload</button>
                               </ReactFileReader>
+                            </div>
 
-                             <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
+                             <Tabs className="react-tabs-form" selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
                                              <TabList className="tabtop">
-                                               <h1 className = "chatAppHeader"> Select Axis </h1>
+                                               <h1 className = "chatAppHeader"> Select Axis & ChartType  </h1>
                                                                <Tab>X Axis Charts</Tab>
                                                                <Tab>X, Y Axis Chart</Tab>
                                              </TabList>
@@ -319,19 +333,21 @@ export  class BarChart extends React.Component {
 
                                              <TabPanel>
                                                  {this.displayChartOptions()}
-                                                 <form onSubmit={this.addNewDataPointAndLabel.bind(this)} >
-                                                       <input  className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "dataValue" placeholder= "Value of new datapoint"/>
-                                                       <input className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "label" placeholder= "X-axis label"/>
-                                                        <button className=' button-login'> Add Data Point on X-Axis and Label</button>
+                                                 {this.state.error}
+                                                 <form onSubmit={this.addNewDataPointAndLabel.bind(this)} class="form-inline">
+                                                       <input id="submitValInput" className = 'inputXval' type="text" ref = "dataValue" placeholder= "Value of datapoint"/>
+                                                       <input id="submitValInput" className = 'inputXval' type="text" ref = "label" placeholder= "X-axis label"/>
+                                                        <button className=' button-submitForm'> Add New Data Point</button>
                                                  </form>
                                              </TabPanel>
 
                                              <TabPanel>
                                                   {this.displayChartOptions2d() }
-                                                   <form onSubmit={this.addNewXYDataPointAndLabel.bind(this)} >
-                                                         <input  className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "xAxis" placeholder= "X-axis label"/>
-                                                         <input className = 'inputLoginFormStyles form-control form-control-lg' type="text" ref = "yAxis" placeholder= "Y-axis label"/>
-                                                          <button className=' button-login'> Add X,Y Point</button>
+                                                  {this.state.error}
+                                                   <form onSubmit={this.addNewXYDataPointAndLabel.bind(this)} class="form-inline">
+                                                         <input  id="submitValInput" className = 'inputXval' type="text" ref = "xAxis" placeholder= "X-axis value"/>
+                                                         <input id="submitValInput" className = 'inputXval' type="text" ref = "yAxis" placeholder= "Y-axis value"/>
+                                                          <button className=' button-submitForm'> Add X,Y Point</button>
                                                    </form>
                                             </TabPanel>
                               </Tabs>

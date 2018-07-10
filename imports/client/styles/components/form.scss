@@ -1,0 +1,133 @@
+
+@mixin desktopView(){
+  //apply styles when the browser is atleast 50rem
+  @media (min-width:50rem){
+    @content
+  }
+
+}
+@mixin smallestPhoneSizes(){
+  @media (max-width:360px){
+      @content
+  }
+}
+@mixin mediumSizedPhones(){
+  @media only screen and (max-width: 425px) and (min-width: 360px)  {
+      @content
+  }
+}
+@mixin tablets(){
+  @media only screen and (max-width: 768px) and (min-width: 425px)  {
+      @content
+  }
+}
+
+
+
+#submitValInput::-webkit-input-placeholder {
+    color: #d4d4d4;
+}
+
+//upload file button
+.react-file-reader input{
+  width: 14px !important;
+  position: relative !important;
+}
+
+.inputXval{
+    width: 30%;
+    display: inline-block;
+    margin: 10px;
+    text-align: center;
+    padding: 3px;
+    border: solid 1px #cccccc;
+    border-radius: 5px;
+
+    @include smallestPhoneSizes{
+      width:100%;
+    }
+
+    @include mediumSizedPhones{
+        width:100%;
+    }
+
+    @include tablets{
+  width:100%;
+    }
+
+    @include desktopView{
+
+    }
+}
+
+
+.radio-button{
+  font-size: 13px;
+  margin: 5px;
+}
+
+
+.addXYForm{
+  width: 20%;
+      margin: 10px;
+}
+
+
+.form-inline{
+  border: solid 1px #c5c5c5;
+    margin: 10px;
+    justify-content: center;
+}
+
+
+.react-tabs-form{
+  width: 100%;
+  text-align: center;
+
+}
+
+
+.button-submitForm{
+    width: 30%;
+    margin: 10px;
+    background-color: #6200ee;
+    color: white;
+    border: none;
+    padding: 7px;
+
+    @include smallestPhoneSizes{
+      width:100%;
+    }
+
+    @include mediumSizedPhones{
+      width:100%;
+    }
+
+    @include tablets{
+      width:100%;
+    }
+
+    @include desktopView{
+
+    }
+}
+
+
+.chatAppHeader{
+
+      @include smallestPhoneSizes{
+        width:100%;
+      }
+
+      @include mediumSizedPhones{
+        width:100%;
+      }
+
+      @include tablets{
+        width:100%;
+      }
+
+      @include desktopView{
+
+      }
+}

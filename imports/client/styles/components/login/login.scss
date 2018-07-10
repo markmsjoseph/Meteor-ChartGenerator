@@ -127,9 +127,10 @@ input:-webkit-autofill {
 }
 
 .react-tabs__tab--selected {
-  background: #2035a2;
+  background: #7f39fb;;
       /* border-color: #aaa; */
       color: white !important;
+          margin: 10px;
 }
 
 .react-tabs__tab--disabled {

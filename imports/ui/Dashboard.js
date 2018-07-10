@@ -29,9 +29,9 @@ export default class Dashboard extends React.Component {
                         <div className="header">
                                   <div className="header__content">
                                         <PrivateHeader  title="Data Charts"  />
-
                                   </div>
-                                <p className="item-instructions">  Save your excel document as a csv file with the first row being the titles of the data and the second row being the data values and click upload </p>
+                                  <h3 className="item-instructions"> Upload CSV or plot your own points</h3>
+                                <p className="item-instructions">CSV: Upload a .CSV file with first being headings and second being data values. To plot on the X and Y axis, the third row must contain the Y values of the datapoints </p>
                         </div>
 
                       <Chart />
