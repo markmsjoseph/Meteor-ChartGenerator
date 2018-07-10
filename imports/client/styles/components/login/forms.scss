@@ -25,7 +25,7 @@
 // Create placeholder mixin
 @mixin placeholder($color, $size:"") {
       &::-webkit-input-placeholder {
-        color: $color;
+        color: black;
             @if $size != "" {
               font-size: $size;
             }

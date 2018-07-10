@@ -88,7 +88,7 @@ background: -webkit-linear-gradient(top, #010054 0%, rgba(1, 0, 82, 0.9) 8%, rgb
 
 @-webkit-keyframes autofill {
     to {
-        color: white;
+        color: black;
         background: transparent;
     }
 }
@@ -106,7 +106,7 @@ input:-webkit-autofill {
 
 .react-tabs__tab--selected {
     color:white !important;
-  
+
 }
 
 
