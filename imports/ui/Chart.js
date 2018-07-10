@@ -30,7 +30,7 @@ export  class BarChart extends React.Component {
         var dataObject ={
                                labels: this.state.xAxisLabels,
                                datasets: [{
-                                             label: '# of Votes',
+                                             label: 'Your Data',
                                              data: data,
                                              backgroundColor: [
                                                 'rgba(255, 99, 132, 0.2)',
@@ -321,7 +321,7 @@ export  class BarChart extends React.Component {
 
                                         <div className="buttonControlsWrapper">
                                                 <ReactFileReader handleFiles={this.handleFiles} fileTypes={'.csv'}>
-                                                    <button className="buttonControls3">Upload .CSV</button>
+                                                    <button id="Upoad" className="buttonControls">Upload .CSV</button>
                                                 </ReactFileReader>
                                         </div>
 
