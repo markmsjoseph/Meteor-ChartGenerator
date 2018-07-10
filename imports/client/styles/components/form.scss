@@ -22,11 +22,101 @@
   }
 }
 
+.buttonControls{
+  width: 100%;
+display: inline-block;
 
+text-align: center;
+
+}
+
+.buttonControlsWrapper{
+      width: 20%;
+      display: inline-block;
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      @include smallestPhoneSizes{
+        width:90%;
+      }
+
+      @include mediumSizedPhones{
+        width:90%;
+      }
+
+      @include tablets{
+        width:90%;
+      }
+
+      @include desktopView{
+
+      }
+
+}
+
+.buttonControls2{
+      width: 20%;
+      display: inline-block;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      text-align: center;
+      padding: 3px;
+      border: solid 1px #cccccc;
+      border-radius: 5px;
+        background: #6200ee;
+  color: white;
+  a{
+    background: #6200ee;
+color: white;
+  }
+      @include smallestPhoneSizes{
+        width:90%;
+      }
+
+      @include mediumSizedPhones{
+        width:90%;
+      }
+
+      @include tablets{
+        width:90%;
+      }
+
+      @include desktopView{
+
+      }
+}
+.buttonControls3{
+      width: 100%;
+      display: inline-block;
+      text-align: center;
+      padding: 3px;
+      border: solid 1px #cccccc;
+      border-radius: 5px;
+      background: #6200ee;
+color: white;
+      @include smallestPhoneSizes{
+        width:100%;
+      }
+
+      @include mediumSizedPhones{
+        width:100%;
+      }
+
+      @include tablets{
+        width:100%;
+      }
+
+      @include desktopView{
+
+      }
+}
 
 #submitValInput::-webkit-input-placeholder {
     color: #d4d4d4;
 }
+
+
+
 
 //upload file button
 .react-file-reader input{

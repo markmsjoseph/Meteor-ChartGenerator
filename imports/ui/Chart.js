@@ -27,33 +27,33 @@ export  class BarChart extends React.Component {
     //called in render method and passed as arg to renderChartType
     returnDataSet =(data) =>{
 
-      var dataObject ={
-                             labels: this.state.xAxisLabels,
-                             datasets: [{
-                                           label: '# of Votes',
-                                           data: data,
-                                           backgroundColor: [
-                                              'rgba(255, 99, 132, 0.2)',
-                                              'rgba(54, 162, 235, 0.2)',
-                                              'rgba(255, 206, 86, 0.2)',
-                                              'rgba(75, 192, 192, 0.2)',
-                                              'rgba(153, 102, 255, 0.2)',
-                                              'rgba(255, 159, 64, 0.2)'
-                                            ],
-                                            borderColor: [
-                                                'rgba(255,99,132,1)',
-                                                'rgba(54, 162, 235, 1)',
-                                                'rgba(255, 206, 86, 1)',
-                                                'rgba(75, 192, 192, 1)',
-                                                'rgba(153, 102, 255, 1)',
-                                                'rgba(255, 159, 64, 1)'
-                                            ],
-                                            borderWidth: 1
-                             }]
-                     }
+        var dataObject ={
+                               labels: this.state.xAxisLabels,
+                               datasets: [{
+                                             label: '# of Votes',
+                                             data: data,
+                                             backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(255, 206, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)'
+                                              ],
+                                              borderColor: [
+                                                  'rgba(255,99,132,1)',
+                                                  'rgba(54, 162, 235, 1)',
+                                                  'rgba(255, 206, 86, 1)',
+                                                  'rgba(75, 192, 192, 1)',
+                                                  'rgba(153, 102, 255, 1)',
+                                                  'rgba(255, 159, 64, 1)'
+                                              ],
+                                              borderWidth: 1
+                               }]
+                       }
 
 
-       return dataObject;
+         return dataObject;
 
     }
 
@@ -317,11 +317,35 @@ export  class BarChart extends React.Component {
                   <div className="container">
                             <div className="row justify-content-center selectCharts">
 
-                              <div className = "fileREaderButton">
-                              <ReactFileReader handleFiles={this.handleFiles} fileTypes={'.csv'}>
-                                  <button className=''>Upload</button>
-                              </ReactFileReader>
-                            </div>
+                              <div className="buttonControls">
+
+                                        <div className="buttonControlsWrapper">
+                                                <ReactFileReader handleFiles={this.handleFiles} fileTypes={'.csv'}>
+                                                    <button className="buttonControls3">Upload .CSV</button>
+                                                </ReactFileReader>
+                                        </div>
+
+                                        <button className="buttonControls2" onClick={()=>{
+                                                  //must convert chart image to base 64
+                                                  var url_base64 = document.getElementsByClassName('chartjs-render-monitor');
+                                                  const imgWrap = document.getElementById('imgWrap');
+                                                  var a = document.getElementById('imageLine');
+                                                  var img = new Image();
+                                                  //convert to url
+                                                  img.src = url_base64[0].toDataURL();
+                                                  //set link to image
+                                                  a.href = img.src;
+                                                  a.appendChild(img);
+                                                  //hide image
+                                                  img.style.display ="none";
+                                                }}> Generate Png
+                                        </button>
+
+                                      <div className="buttonControls2" id="imgWrap">
+                                            <a  id = "imageLine" href="" download>Click to Dowload</a>
+                                      </div>
+                                </div>
+
 
                              <Tabs className="react-tabs-form" selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
                                              <TabList className="tabtop">
